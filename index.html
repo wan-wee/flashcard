@@ -11,8 +11,27 @@ talking pen
             margin: 0;
             padding: 20px;
         }
- 
-      /* Side Navigation Styles */
+        
+       /* Sidebar Toggle Button */
+        .toggle-btn {
+            position: fixed;
+            left: 250px;
+            top: 20px;
+            background: #8B0000;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+            z-index: 1000;
+            transition: left 0.3s;
+        }
+
+        body.sidebar-collapsed .toggle-btn {
+            left: 0;
+        }
+
+        /* Side Navigation Styles */
         .sidenav {
             width: 250px;
             height: 100vh;
@@ -23,6 +42,12 @@ talking pen
             top: 0;
             overflow-y: auto;
             box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+            transition: left 0.3s;
+            z-index: 999;
+        }
+
+        body.sidebar-collapsed .sidenav {
+            left: -250px;
         }
 
         .sidenav h2 {
@@ -31,7 +56,7 @@ talking pen
             text-align: center;
         }
 
-         .nav-item {
+        .nav-item {
             padding: 10px 15px;
             margin: 5px 0;
             border-radius: 5px;
@@ -50,7 +75,27 @@ talking pen
             background-color: #FFD700;
             font-weight: bold;
         }
-           
+
+        /* Submenu styles */
+        .submenu {
+            margin-left: 20px;
+            display: none;
+        }
+
+        .submenu.show {
+            display: block;
+        }
+
+        .nav-item.has-submenu::after {
+            content: '▼';
+            float: right;
+            font-size: 12px;
+        }
+
+        .nav-item.has-submenu.expanded::after {
+            content: '▲';
+        } 
+      
         .content-card {
             background-color: white;
             max-width: 800px;
