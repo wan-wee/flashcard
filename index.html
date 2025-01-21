@@ -1,9 +1,10 @@
 <!DOCTYPE html>
+talking pen
+       
 <html>
 <head>
-    <title>RANGSANGAN - Interactive Learning | Section 1</title>
+    <title>RANGSANGAN - Interactive Learning</title>
     <style>
-        /* Original styles */
         body {
             font-family: Arial, sans-serif;
             background-color: #FF8C00;
@@ -19,68 +20,85 @@
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
             position: relative;
         }
-        /* ... (previous styles remain the same) ... */
-
-        /* New navigation styles */
-        .navigation {
-            background-color: white;
+        .title {
+            color: #8B0000;
+            font-size: 36px;
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 30px;
+        }
+        .sun-decoration {
+            position: absolute;
+            top: -30px;
+            right: 50px;
+            font-size: 60px;
+            color: #FFD700;
+        }
+        .backpack-decoration {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 40px;
+        }
+        .language-section {
+            margin: 20px 0;
             padding: 15px;
             border-radius: 10px;
-            margin-bottom: 20px;
-            max-width: 800px;
-            margin: 0 auto 20px auto;
-        }
-        .section-nav {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-        .page-nav {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 20px;
-        }
-        .nav-button {
-            background-color: #8B0000;
-            color: white;
-            padding: 8px 15px;
-            border: none;
-            border-radius: 5px;
+            background-color: #FFF5E6;
             cursor: pointer;
-            text-decoration: none;
+            transition: background-color 0.3s;
         }
-        .nav-button:hover {
-            background-color: #FF4500;
+        .language-section:hover {
+            background-color: #FFE4B5;
         }
-        .section-indicator {
+        .language-section.playing {
+            background-color: #FFD700;
+        }
+        .definition {
+            font-size: 18px;
+            line-height: 1.6;
+        }
+        .character-image {
             text-align: center;
-            color: #8B0000;
-            font-weight: bold;
-            margin: 10px 0;
+            margin: 20px 0;
+        }
+        .character-image img {
+            width: 150px;
+            height: auto;
         }
     </style>
 </head>
 <body>
-    <!-- Navigation -->
-    <div class="navigation">
-        <div class="section-nav">
-            <a href="section1/page1.html" class="nav-button">Section 1</a>
-            <a href="section2/page1.html" class="nav-button">Section 2</a>
-            <!-- ... up to Section 13 ... -->
-            <a href="section13/page1.html" class="nav-button">Section 13</a>
-        </div>
-        <div class="section-indicator">
-            Section 1 - Page 1/8
-        </div>
-    </div>
-
-    <!-- Original content card -->
     <div class="content-card">
-        <!-- ... (original content remains the same) ... -->
-    </div>
+        <div class="sun-decoration">☀️</div>
+        <div class="backpack-decoration">🎒</div>
+        
+        <h1 class="title">RANGSANGAN</h1>
+        
+        <div class="character-image">
+            <!-- Replace with actual character image -->
+            <img src="image/bab1 t3.png" alt="Click here" class="bab1 t3">
+        </div>
 
-    <!-- Page navigation -->
+        <div class="language-section" onclick="playAudio('audioMalay')">
+            <h2>Ransangan</h2>
+            <p class="definition">Suatu perkara atau peristiwa yang menyebabkan respons dalam sistem saraf.</p>
+            <audio id="audioMalay" src="audio/audioMalay.mp3"></audio>
+        </div>
+
+        <div class="language-section" onclick="playAudio('audioChinese')">
+            <h2>刺激</h2>
+            <p class="definition">刺激是引发神经系统反应的事物或事件</p>
+            <audio id="audioChinese" src="audio/audioChinese.mp3"></audio>
+        </div>
+
+        <div class="language-section" onclick="playAudio('audioTamil')">
+            <h2>தூண்டுகோள்</h2>
+            <p class="definition">ஒரு செயலுக்காக நரம்பு மண்டலத்தினரியுள்ள பதிலைத் தூண்டும் ஒரு நிகழ்வு</p>
+            <audio id="audioTamil" src="audio/audioTamil.mp3"></audio>
+        </div>
+    </div>
+    
     <div class="navigation">
         <div class="page-nav">
             <a href="#" class="nav-button" style="visibility: hidden;">Previous</a>
@@ -88,9 +106,24 @@
         </div>
     </div>
 
-    <!-- Original script -->
     <script>
-        // ... (original script remains the same) ...
+        function playAudio(audioId) {
+            // Remove playing class from all sections
+            document.querySelectorAll('.language-section').forEach(section => {
+                section.classList.remove('playing');
+            });
+            
+            // Stop all playing audio
+            document.querySelectorAll('audio').forEach(audio => {
+                audio.pause();
+                audio.currentTime = 0;
+            });
+            
+            // Play selected audio and highlight section
+            const audio = document.getElementById(audioId);
+            audio.play();
+            audio.parentElement.classList.add('playing');
+        }
     </script>
 </body>
 </html>
