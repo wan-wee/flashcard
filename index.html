@@ -95,7 +95,19 @@ talking pen
         .nav-item.has-submenu.expanded::after {
             content: '▲';
         } 
-      
+           
+        /* Main Content Styles */
+        .main-content {
+            margin-left: 250px;
+            padding: 20px;
+            width: calc(100% - 250px);
+            transition: margin-left 0.3s, width 0.3s;
+        }
+
+        body.sidebar-collapsed .main-content {
+            margin-left: 0;
+            width: 100%;
+        }
         .content-card {
             background-color: white;
             max-width: 800px;
@@ -262,6 +274,58 @@ talking pen
                 this.classList.add('active');
             });
         });
+
+        // Toggle sidebar
+        function toggleSidebar() {
+            document.body.classList.toggle('sidebar-collapsed');
+        }
+
+        // Toggle submenu
+        function toggleSubmenu(element) {
+            element.classList.toggle('expanded');
+            const submenu = element.nextElementSibling;
+            submenu.classList.toggle('show');
+        }
+
+        // Set active nav item based on current page
+        function setActiveNavItem() {
+            const currentPath = window.location.pathname;
+            document.querySelectorAll('.nav-item').forEach(item => {
+                if (item.getAttribute('href') === currentPath.split('/').pop()) {
+                    item.classList.add('active');
+                    // If item is in submenu, expand parent
+                    const parentSubmenu = item.closest('.submenu');
+                    if (parentSubmenu) {
+                        parentSubmenu.classList.add('show');
+                        parentSubmenu.previousElementSibling.classList.add('expanded');
+                    }
+                }
+            });
+        }
+
+        // Save sidebar state in localStorage
+        function saveSidebarState() {
+            const isCollapsed = document.body.classList.contains('sidebar-collapsed');
+            localStorage.setItem('sidebarCollapsed', isCollapsed);
+        }
+
+        // Load sidebar state from localStorage
+        function loadSidebarState() {
+            const isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+            if (isCollapsed) {
+                document.body.classList.add('sidebar-collapsed');
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            setActiveNavItem();
+            loadSidebarState();
+        });
+
+        // Save state when toggling
+        const toggleBtn = document.querySelector('.toggle-btn');
+        toggleBtn.addEventListener('click', saveSidebarState);
            
     </script>
 </body>
