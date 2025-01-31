@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+talking pen
+       
+<html>
+<head>
+    <title>VERTEBRATA - Interactive Learning</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #FF8C00;
+            margin: 0;
+            padding: 20px;
+        }
+
+
+       /* Sidebar Toggle Button */
+        .toggle-btn {
+            position: fixed;
+            left: 250px;
+            top: 20px;
+            background: #8B0000;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+            z-index: 1000;
+            transition: left 0.3s;
+        }
+
+        body.sidebar-collapsed .toggle-btn {
+            left: 0;
+        }
+
+        /* Side Navigation Styles */
+        .sidenav {
+            width: 250px;
+            height: 100vh;
+            background-color: white;
+            padding: 20px;
+            position: fixed;
+            left: 0;
+            top: 0;
+            overflow-y: auto;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+            transition: left 0.3s;
+            z-index: 999;
+        }
+
+        body.sidebar-collapsed .sidenav {
+            left: -250px;
+        }
+
+        .sidenav h2 {
+            color: #8B0000;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .nav-item {
+            padding: 10px 15px;
+            margin: 5px 0;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            color: #333;
+            text-decoration: none;
+            display: block;
+        }
+
+        .nav-item:hover {
+            background-color: #FFE4B5;
+        }
+
+        .nav-item.active {
+            background-color: #FFD700;
+            font-weight: bold;
+        }
+
+        /* Submenu styles */
+        .submenu {
+            margin-left: 20px;
+            display: none;
+        }
+
+        .submenu.show {
+            display: block;
+        }
+
+        .nav-item.has-submenu::after {
+            content: '▼';
+            float: right;
+            font-size: 12px;
+        }
+
+        .nav-item.has-submenu.expanded::after {
+            content: '▲';
+        } 
+           
+        /* Main Content Styles */
+        .main-content {
+            margin-left: 250px;
+            padding: 20px;
+            width: calc(100% - 250px);
+            transition: margin-left 0.3s, width 0.3s;
+        }
+
+        body.sidebar-collapsed .main-content {
+            margin-left: 0;
+            width: 100%;
+        }
+        .content-card {
+            background-color: white;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        /* Add new pagination styles */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin-top: 20px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            max-width: 800px;
+            margin: 20px auto;
+        }
+        .page-link {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #FFF5E6;
+            color: #8B0000;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        .page-link:hover {
+            background-color: #FFD700;
+            transform: scale(1.1);
+        }
+        .page-link.active {
+            background-color: #8B0000;
+            color: white;
+        }
+
+           
+        .title {
+            color: #8B0000;
+            font-size: 36px;
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 30px;
+        }
+        .sun-decoration {
+            position: absolute;
+            top: -30px;
+            right: 50px;
+            font-size: 60px;
+            color: #FFD700;
+        }
+        .backpack-decoration {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 40px;
+        }
+        .language-section {
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 10px;
+            background-color: #FFF5E6;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .language-section:hover {
+            background-color: #FFE4B5;
+        }
+        .language-section.playing {
+            background-color: #FFD700;
+        }
+        .definition {
+            font-size: 18px;
+            line-height: 1.6;
+        }
+        .character-image {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .character-image img {
+            width: 150px;
+            height: auto;
+        }
+        .section-nav {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .page-nav {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        .nav-button {
+            background-color: #8B0000;
+            color: white;
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .nav-button:hover {
+            background-color: #F7F6F5;
+        }
+
+           
+    </style>
+</head>
+<body>
+ <!-- Side Navigation -->
+ <div class="sidenav">
+        <h2>Contents</h2>
+        <a href="#" class="nav-item active">Introduction</a>
+        <a href="#" class="nav-item">Chapter 1</a>
+        <a href="#" class="nav-item">Chapter 2</a>
+        <a href="#" class="nav-item">Chapter 3</a>
+        <a href="#" class="nav-item">Chapter 4</a>
+        <a href="#" class="nav-item">Chapter 5</a>
+        <a href="#" class="nav-item">Chapter 6</a>
+        <a href="#" class="nav-item">Chapter 7</a>
+        <a href="#" class="nav-item">Chapter 8</a>
+        <a href="#" class="nav-item">Chapter 9</a>
+        <a href="#" class="nav-item">Chapter 10</a>
+        <a href="#" class="nav-item">Exercises</a>
+        <a href="#" class="nav-item">Quiz</a>
+    </div>
+
+        
+    <div class="content-card">
+        <div class="sun-decoration">☀️</div>
+        <div class="backpack-decoration">🎒</div>
+        
+        <h1 class="title">VETERBRATA</h1>
+        
+        <div class="character-image">
+            <!-- Replace with actual character image -->
+            <img src="image/2bab1 t2.png" alt="Click here" class="2bab1 t2">
+        </div>
+
+        <div class="language-section" onclick="playAudio('VertebrataM')">
+            <h2>Vertebrata</h2>
+            <p class="definition">haiwan yang bertulang belakang.</p>
+            <audio id="VertebrataM" src="audio/VertebrataM.mp3"></audio>
+        </div>
+
+        <div class="language-section" onclick="playAudio('VertebrataC')">
+            <h2>脊椎动物</h2>
+            <p class="definition">有脊椎的动物</p>
+            <audio id="VertebrataC" src="audio/VertebrataC.mp3"></audio>
+        </div>
+
+        <div class="language-section" onclick="playAudio('VertebrataT')">
+            <h2>अकशेरुकी</h2>
+            <p class="definition">अकशेरुकी जानवर</p>
+            <audio id="VertebrataT" src="audio/VertebrataM.mp3"></audio>
+        </div>
+    </div>
+
+       <div class="pagination">
+        <a href="page1.html" class="page-link">1</a>
+        <a href="page2.html" class="page-link active">2</a>
+        <a href="page3.html" class="page-link">3</a>
+        <a href="page4.html" class="page-link">4</a>
+        <a href="page5.html" class="page-link">5</a>
+        <a href="page6.html" class="page-link">6</a>
+        <a href="page7.html" class="page-link">7</a>
+        <a href="page8.html" class="page-link">8</a>
+        <a href="page9.html" class="page-link">9</a>
+        <a href="page10.html" class="page-link">10</a>
+        </div>
+    </div>
+</div>
+
+      
+    <div class="navigation">
+        <div class="page-nav">
+            <a href="#" class="nav-button" style="visibility: hidden;">Previous</a>
+            <a href="page2.html" class="nav-button">Next</a>
+        </div>
+    </div>
+
+    <script>
+        function playAudio(audioId) {
+            // Remove playing class from all sections
+            document.querySelectorAll('.language-section').forEach(section => {
+                section.classList.remove('playing');
+            });
+            
+            // Stop all playing audio
+            document.querySelectorAll('audio').forEach(audio => {
+                audio.pause();
+                audio.currentTime = 0;
+            });
+            
+            // Play selected audio and highlight section
+            const audio = document.getElementById(audioId);
+            audio.play();
+            audio.parentElement.classList.add('playing');
+        }
+
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function() {
+                document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Toggle sidebar
+        function toggleSidebar() {
+            document.body.classList.toggle('sidebar-collapsed');
+        }
+
+        // Toggle submenu
+        function toggleSubmenu(element) {
+            element.classList.toggle('expanded');
+            const submenu = element.nextElementSibling;
+            submenu.classList.toggle('show');
+        }
+
+        // Set active nav item based on current page
+        function setActiveNavItem() {
+            const currentPath = window.location.pathname;
+            document.querySelectorAll('.nav-item').forEach(item => {
+                if (item.getAttribute('href') === currentPath.split('/').pop()) {
+                    item.classList.add('active');
+                    // If item is in submenu, expand parent
+                    const parentSubmenu = item.closest('.submenu');
+                    if (parentSubmenu) {
+                        parentSubmenu.classList.add('show');
+                        parentSubmenu.previousElementSibling.classList.add('expanded');
+                    }
+                }
+            });
+        }
+
+        // Save sidebar state in localStorage
+        function saveSidebarState() {
+            const isCollapsed = document.body.classList.contains('sidebar-collapsed');
+            localStorage.setItem('sidebarCollapsed', isCollapsed);
+        }
+
+        // Load sidebar state from localStorage
+        function loadSidebarState() {
+            const isCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
+            if (isCollapsed) {
+                document.body.classList.add('sidebar-collapsed');
+            }
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            setActiveNavItem();
+            loadSidebarState();
+        });
+
+        // Save state when toggling
+        const toggleBtn = document.querySelector('.toggle-btn');
+        toggleBtn.addEventListener('click', saveSidebarState);
+           
+    </script>
+</body>
+</html>
